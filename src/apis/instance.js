@@ -13,7 +13,7 @@ instance.interceptors.request.use(
     if (user) {
       config.headers = {
         ...config.headers,
-        Authorization: `bearer${user.token}`,
+        Authorization: `Bearer ${user.token}`,
       }
     }
     return config

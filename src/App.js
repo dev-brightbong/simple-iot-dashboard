@@ -39,7 +39,6 @@ const App = () => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const { isAuthenticated } = useAuth()
-
   return (
     <HashRouter>
       <Suspense
