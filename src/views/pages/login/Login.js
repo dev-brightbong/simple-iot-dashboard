@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -17,19 +17,28 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
 import { authApi } from 'src/apis/auth/auth.api'
+import { useAuth } from 'src/contexts/AuthContext'
 
 const USER_NAME = 'interview@goqual.com'
 const PASSWORD = '23af56ed'
 
 const Login = () => {
+  const navigate = useNavigate()
+  const { login } = useAuth()
   const [username, setUsername] = useState(USER_NAME)
   const [password, setPassword] = useState(PASSWORD)
 
-  const handleLogin = () => {
-    authApi.login({
-      username,
-      password,
-    })
+  const handleLogin = async () => {
+    try {
+      const response = await authApi.login({
+        username,
+        password,
+      })
+      login(response)
+      navigate('/dashboard')
+    } catch (e) {
+      alert(e.response.data.message)
+    }
   }
 
   return (
