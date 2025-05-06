@@ -1,48 +1,54 @@
 import { useState, useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { pluginsApi } from 'src/apis/plugins/plugins.api'
 import { convertDeviceStatusData, labels } from '../utils/dashboard-utils'
+
+const TEN_MINUTES = 10 * 60 * 1000
 
 const useDeviceStatus = () => {
   const [deviceStatus, setDeviceStatus] = useState({
     labels: [],
     datasets: [],
   })
-  const [interval, setInterval] = useState('')
+  const [deviceStatusKeys, setDeviceStatusKeys] = useState([])
+  const [interval, setInterval] = useState({ value: null })
 
-  const getDeviceKeys = async () => {
-    try {
-      const res = await pluginsApi.getDeviceKeys()
-      const requiredKeys = res.filter((item) => [...labels, 'interval'].includes(item)) || []
-      if (requiredKeys.length > 0) {
-        getDeviceValues(requiredKeys)
+  const { data: deviceStatusKeysData } = useQuery({
+    queryKey: ['deviceStatusKeys'],
+    queryFn: () => pluginsApi.getDeviceKeys(),
+  })
+
+  const { data: deviceStatusValuesData } = useQuery({
+    queryKey: ['deviceStatusValues'],
+    queryFn: () =>
+      pluginsApi.getDeviceValues({
+        keys: deviceStatusKeys.filter((item) => [...labels, 'interval'].includes(item)).join(','),
+        startTs: Date.now() - TEN_MINUTES,
+        endTs: Date.now(),
+      }),
+    enabled: deviceStatusKeys.length > 0,
+    refetchInterval: parseFloat(interval.value) * 1000,
+  })
+
+  useEffect(
+    function initDeviceKeys() {
+      if (deviceStatusKeysData) {
+        setDeviceStatusKeys(deviceStatusKeysData)
       }
-    } catch (err) {
-      alert('디바이스 상태 key 조회 오류')
-    }
-  }
+    },
+    [deviceStatusKeysData],
+  )
 
-  const getDeviceValues = async (keys) => {
-    try {
-      const endTs = Date.now()
-      const startTs = endTs - 10 * 60 * 1000
-      const params = {
-        keys: keys.join(','),
-        startTs,
-        endTs,
+  useEffect(
+    function initDeviceValues() {
+      if (deviceStatusValuesData) {
+        setInterval(deviceStatusValuesData.interval[0])
+        const data = convertDeviceStatusData(deviceStatusValuesData)
+        setDeviceStatus(data)
       }
-      const res = await pluginsApi.getDeviceValues({ ...params })
-      console.log(res)
-      const data = convertDeviceStatusData(res)
-      setDeviceStatus(data)
-      setInterval(res.interval[0])
-    } catch (err) {
-      alert('디바이스 상태 value 조회 오류')
-    }
-  }
-
-  useEffect(() => {
-    getDeviceKeys()
-  }, [])
+    },
+    [deviceStatusValuesData],
+  )
 
   return { data: deviceStatus, interval }
 }
