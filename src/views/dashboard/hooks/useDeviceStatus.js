@@ -3,7 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import { pluginsApi } from 'src/apis/plugins/plugins.api'
 import { convertDeviceStatusData, labels } from '../utils/dashboard-utils'
 
-const TEN_MINUTES = 10 * 60 * 1000
+const ONE_SECOND = 1000
+const TEN_MINUTES = 10 * 60 * ONE_SECOND
 
 const useDeviceStatus = () => {
   const [deviceStatus, setDeviceStatus] = useState({
@@ -27,7 +28,7 @@ const useDeviceStatus = () => {
         endTs: Date.now(),
       }),
     enabled: deviceStatusKeys.length > 0,
-    refetchInterval: parseFloat(interval.value) * 1000,
+    refetchInterval: parseFloat(interval.value) * ONE_SECOND,
   })
 
   useEffect(
