@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios'
 
 const END_POINT = 'http://hejdev1.goqual.com:8080'
 
-const instance = axios.create({
+export const instance = axios.create({
   baseURL: `${END_POINT}/api`,
 })
 
@@ -19,7 +19,7 @@ instance.interceptors.response.use(
   (res) => {
     return res
   },
-  async (error: AxiosError) => {
+  async (error) => {
     try {
       return Promise.reject(error)
     } catch (e) {
@@ -27,5 +27,3 @@ instance.interceptors.response.use(
     }
   },
 )
-
-export default instance
