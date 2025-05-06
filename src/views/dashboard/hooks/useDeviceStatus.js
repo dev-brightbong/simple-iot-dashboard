@@ -41,7 +41,7 @@ const useDeviceStatus = () => {
   )
 
   useEffect(
-    function initDeviceValues() {
+    function updateDeviceStatusValues() {
       if (deviceStatusValuesData) {
         setInterval(deviceStatusValuesData.interval[0])
         const data = convertDeviceStatusData(deviceStatusValuesData)
