@@ -1,4 +1,5 @@
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
+import { userStorage } from 'src/utils/storage/user-storage'
 
 const END_POINT = 'http://hejdev1.goqual.com:8080'
 
@@ -8,6 +9,13 @@ export const instance = axios.create({
 
 instance.interceptors.request.use(
   async (config) => {
+    const user = userStorage.getUser()
+    if (user) {
+      config.headers = {
+        ...config.headers,
+        Authorization: `bearer${user.token}`,
+      }
+    }
     return config
   },
   (error) => {
