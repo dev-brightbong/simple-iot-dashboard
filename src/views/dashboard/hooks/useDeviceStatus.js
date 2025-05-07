@@ -33,7 +33,7 @@ const useDeviceStatus = () => {
         endTs: Date.now(),
       }),
     enabled: deviceStatusKeys?.length > 0,
-    refetchInterval: (interval.value ? parseFloat(interval.value) : 8) * ONE_SECOND,
+    refetchInterval: (interval.value ? parseFloat(interval.value) : 8) * SECOND,
   })
 
   useEffect(
