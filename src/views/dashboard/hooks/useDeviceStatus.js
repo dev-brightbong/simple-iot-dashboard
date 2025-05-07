@@ -6,49 +6,45 @@ import { convertDeviceStatusData, labels } from '../utils/dashboard-utils'
 const ONE_SECOND = 1000
 const TEN_MINUTES = 10 * 60 * ONE_SECOND
 
+const QUERY_KEYS = {
+  DEVICE_STATUS_KEYS: 'deviceStatusKeys',
+  DEVICE_STATUS_VALUES: 'deviceStatusValues',
+}
+
 const useDeviceStatus = () => {
   const [deviceStatus, setDeviceStatus] = useState({
     labels: [],
     datasets: [],
   })
-  const [deviceStatusKeys, setDeviceStatusKeys] = useState([])
+
   const [interval, setInterval] = useState({ value: null })
 
-  const { data: deviceStatusKeysData } = useQuery({
-    queryKey: ['deviceStatusKeys'],
+  const { data: deviceStatusKeys } = useQuery({
+    queryKey: [QUERY_KEYS.DEVICE_STATUS_KEYS],
     queryFn: () => pluginsApi.getDeviceKeys(),
   })
 
-  const { data: deviceStatusValuesData } = useQuery({
-    queryKey: ['deviceStatusValues'],
+  const { data: deviceStatusValues } = useQuery({
+    queryKey: [QUERY_KEYS.DEVICE_STATUS_VALUES, deviceStatusKeys, interval.value],
     queryFn: () =>
       pluginsApi.getDeviceValues({
         keys: deviceStatusKeys.filter((item) => [...labels, 'interval'].includes(item)).join(','),
         startTs: Date.now() - TEN_MINUTES,
         endTs: Date.now(),
       }),
-    enabled: deviceStatusKeys.length > 0,
-    refetchInterval: parseFloat(interval.value) * ONE_SECOND,
+    enabled: deviceStatusKeys?.length > 0,
+    refetchInterval: (interval.value ? parseFloat(interval.value) : 8) * ONE_SECOND,
   })
 
   useEffect(
-    function initDeviceKeys() {
-      if (deviceStatusKeysData) {
-        setDeviceStatusKeys(deviceStatusKeysData)
-      }
-    },
-    [deviceStatusKeysData],
-  )
-
-  useEffect(
     function updateDeviceStatusValues() {
-      if (deviceStatusValuesData) {
-        setInterval(deviceStatusValuesData.interval[0])
-        const data = convertDeviceStatusData(deviceStatusValuesData)
+      if (deviceStatusValues) {
+        setInterval(deviceStatusValues.interval[0])
+        const data = convertDeviceStatusData(deviceStatusValues)
         setDeviceStatus(data)
       }
     },
-    [deviceStatusValuesData],
+    [deviceStatusValues],
   )
 
   return { data: deviceStatus, interval }
