@@ -8,16 +8,37 @@ const BrightnessControl = () => {
 
   return (
     <CCol className="mt-4" style={{ textAlign: 'center' }}>
-      {/* <CCol>
-        {Array.from({ length: brightness }).map((_, index) => (
-          <CCol key={`brightness-bar-${index}`} style={{ position: 'absolute' }}>
-            <CCol style={{ width: '3px', height: '20px', backgroundColor: 'black' }} />
-          </CCol>
-        ))}
-      </CCol> */}
+      <CCol
+        style={{
+          position: 'relative',
+          height: '100px',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <CCol
+          style={{
+            position: 'absolute',
+            width: '50px',
+            height: '50px',
+            background: `radial-gradient(circle, rgba(255,215,0,${brightness / 100}) 0%, rgba(255,215,0,0) 60%)`,
+            opacity: brightness / 100,
+            transform: 'scale(' + (0.5 + brightness / 100) + ')',
+            transition: 'all 0.3s ease',
+          }}
+        />
 
-      <CCol style={{ position: 'relative' }}>
-        <CIcon width={80} height={80} icon={cilLightbulb} />
+        <CIcon
+          width={80}
+          height={80}
+          icon={cilLightbulb}
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            color: brightness > 0 ? '#ffd700' : '#888',
+            opacity: brightness > 0 ? brightness / 10 : 0.1,
+          }}
+        />
       </CCol>
 
       <input
