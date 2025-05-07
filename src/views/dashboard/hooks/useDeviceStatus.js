@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import { pluginsApi } from 'src/apis/plugins/plugins.api'
 import { convertDeviceStatusData, labels } from '../utils/dashboard-utils'
 
-const ONE_SECOND = 1000
-const TEN_MINUTES = 10 * 60 * ONE_SECOND
+const SECOND = 1000
+const TEN_MINUTES = 10 * 60 * SECOND
 
 const QUERY_KEYS = {
   DEVICE_STATUS_KEYS: 'deviceStatusKeys',
