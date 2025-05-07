@@ -39,10 +39,11 @@ class PluginsApi {
   /**
    * 디바이스 상태 value 제어
    */
-  async setDeviceValue() {
+  async setDeviceValue(params) {
     try {
       const response = await this.instance.post(
         `/plugins/telemetry/DEVICE/${DEVICE_ID}/SERVER_SCOPE`,
+        params,
       )
       return response
     } catch (e) {

@@ -3,8 +3,38 @@ import { CCol } from '@coreui/react'
 import { cilLightbulb } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
+import { pluginsApi } from 'src/apis/plugins/plugins.api'
+
 const BrightnessControl = () => {
   const [brightness, setBrightness] = useState(0)
+  const [isAdjusting, setIsAdjusting] = useState(false)
+
+  const handleBrightnessChange = (e) => {
+    const value = e.target.value
+    setBrightness(value)
+    if (!isAdjusting) {
+      controlBrightness(value)
+    }
+  }
+
+  const handleDragStart = () => {
+    setIsAdjusting(true)
+  }
+
+  const handleDragEnd = () => {
+    setIsAdjusting(false)
+    controlBrightness(brightness)
+  }
+
+  const controlBrightness = async (value) => {
+    try {
+      await pluginsApi.setDeviceValue({
+        brightness: value.toString(),
+      })
+    } catch (e) {
+      alert(e.response.data.message)
+    }
+  }
 
   return (
     <CCol className="mt-4" style={{ textAlign: 'center' }}>
@@ -48,7 +78,11 @@ const BrightnessControl = () => {
         min="0"
         max="100"
         value={brightness}
-        onChange={(e) => setBrightness(parseInt(e.target.value))}
+        onChange={handleBrightnessChange}
+        onMouseDown={handleDragStart}
+        onMouseUp={handleDragEnd}
+        onTouchStart={handleDragStart}
+        onTouchEnd={handleDragEnd}
       />
       <CCol>
         <label htmlFor="volume">밝기 ({brightness}%)</label>
