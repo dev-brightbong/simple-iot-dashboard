@@ -1,4 +1,4 @@
-![device-status-daashboard](https://github.com/user-attachments/assets/75f99fce-8de2-45cc-ad54-cda0a394dbc1)# Simple IoT Dashboard
+# Simple IoT Dashboard
 
 ## 기술스택
   - based by Core UI React Admin Template
