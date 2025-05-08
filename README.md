@@ -4,7 +4,7 @@
   - based by Core UI React Admin Template
   - JavaScript
   - React.js (v19)
-  - tanstack/react-query (v5)
+  - @tanstack/react-query (v5)
   - axios
 
 ## 실행 방법
@@ -76,7 +76,6 @@ coreui-free-react-admin-template
 ### axios
 - 인터셉터를 통해 모든 API 요청에 인증 토큰을 자동으로 추가하여 중복 코드를 제거할 수 있어 선택했습니다.
 - 인스턴스 기반 설정으로 baseURL, 헤더, 타임아웃 등을 중앙에서 관리할 수 있어 선택했습니다.
-- 일관된 응답 구조로 개발 편의성을 향상시켜 선택했습니다.
 
 ## 구현기능 설명
 
@@ -95,11 +94,6 @@ coreui-free-react-admin-template
   ### 디바이스 상태 조회
   - CoreUI의 라인차트를 이용해 `wh40batt`, `baromrelin`, `soilad1`, `rainratein` 데이터를 시각화했습니다.
   - react-query를 이용해 API-2(디바이스 상태 key 조회)와 API-3(디바이스 상태 value 조회) 데이터를 interval값을 이용해 갱신합니다.
-
-    #### react-query를 사용한 이유
-    - 대시보드는 실시간 데이터 갱신이 필수적이기 때문에, react-query의 `refetchInterval` 옵션을 활용해 데이터 폴링을 구현했습니다.
-    - setInterval 등으로 폴링을 직접 구현할 경우, 상태 관리, 에러 처리, 언마운트 시 cleanup 등 부가적인 코드가 많아지고, 유지보수가 어려워지는 단점이 있습니다.
-    - 번들 사이즈 측면에서 tree-shaking이 잘되는 경량라이브러리라, 전체 프로젝트에 미치는 영향은 제한적일것이라 생각했습니다.
   
   - **관련 파일**
     - `src/views/dashboard/Dashboard.js` - 대시보드 UI
@@ -125,9 +119,8 @@ coreui-free-react-admin-template
 ## 개선 및 회고
 
 #### TypeScript 적용
-- TypeScript를 적용하여 타입 안정성을 확보하고 컴파일 과정에서 오류를 조기에 발견할 수 있었을 것입니다. 
 - 초기 TypeScript 적용을 시도했으나, 기존 템플릿과의 호환성 문제로 과제의 핵심 요구사항 구현에 집중했습니다.
-- 향후에는 처음부터 TypeScript 기반으로 설계하는 것이 좋을 것 같습니다.
+- TypeScript를 적용했을 시 타입 안정성을 확보하고 컴파일 과정에서 오류를 조기에 발견할 수 있었을 것입니다.
 
 #### 인증 체계 개선
 - 토큰갱신 API가 존재했다면, refreshToken을 활용해 인증정보 갱신을 추가해 보안성과 사용자 경험을 개선할수 있었을것 같습니다.
