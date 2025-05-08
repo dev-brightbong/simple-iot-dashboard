@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { userStorage } from 'src/utils/storage/user-storage'
+import { userStorage } from 'src/utils/local-storage/user-storage'
 
 const AuthContext = createContext(null)
 
@@ -20,9 +20,9 @@ export const AuthProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    const storedUser = userStorage.getUser()
-    setUser(storedUser)
-    setIsAuthenticated(!!storedUser)
+    const _user = userStorage.getUser()
+    setUser(_user)
+    setIsAuthenticated(!!_user)
   }, [])
 
   const value = {

@@ -19,6 +19,10 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 import { authApi } from 'src/apis/auth/auth.api'
 import { useAuth } from 'src/contexts/AuthContext'
 
+/**
+ * @description 과제확인을 위해 편의상 정의했습니다.
+ * 실제구현 시 이 방식은 사용하지 않습니다.
+ */
 const USER_NAME = 'interview@goqual.com'
 const PASSWORD = '23af56ed'
 

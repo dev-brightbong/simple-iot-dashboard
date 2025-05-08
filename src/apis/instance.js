@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { userStorage } from 'src/utils/storage/user-storage'
+import { userStorage } from 'src/utils/local-storage/user-storage'
 
 const END_POINT = 'http://hejdev1.goqual.com:8080'
 
