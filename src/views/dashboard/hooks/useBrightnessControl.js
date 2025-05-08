@@ -4,12 +4,12 @@ import { pluginsApi } from 'src/apis/plugins/plugins.api'
 const useBrightnessControl = () => {
   const [brightness, setBrightness] = useState(0)
 
-  const onChange = (e) => {
+  const onChangeBrightness = (e) => {
     const value = e.target.value
     setBrightness(value)
   }
 
-  const onMouseUp = () => {
+  const onMouseUpBrightness = () => {
     controlBrightness(brightness)
   }
 
@@ -23,7 +23,7 @@ const useBrightnessControl = () => {
     }
   }
 
-  return { brightness, onChange, onMouseUp }
+  return { brightness, onChangeBrightness, onMouseUpBrightness }
 }
 
 export default useBrightnessControl

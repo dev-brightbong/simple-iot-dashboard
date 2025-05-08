@@ -5,7 +5,7 @@ import CIcon from '@coreui/icons-react'
 import useBrightnessControl from './hooks/useBrightnessControl'
 
 const BrightnessControl = () => {
-  const { brightness, onChange, onMouseUp } = useBrightnessControl()
+  const { brightness, onChangeBrightness, onMouseUpBrightness } = useBrightnessControl()
 
   return (
     <CCol className="mt-4" style={{ textAlign: 'center' }}>
@@ -49,8 +49,8 @@ const BrightnessControl = () => {
         min="0"
         max="100"
         value={brightness}
-        onChange={onChange}
-        onMouseUp={onMouseUp}
+        onChange={onChangeBrightness}
+        onMouseUp={onMouseUpBrightness}
       />
       <CCol>
         <label htmlFor="volume">밝기 ({brightness}%)</label>
